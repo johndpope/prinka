@@ -1,0 +1,6 @@
+framework module Pods_Pinder3 {
+  umbrella header "Pods-Pinder3-umbrella.h"
+
+  export *
+  module * { export * }
+}
