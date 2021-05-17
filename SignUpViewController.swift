@@ -13,9 +13,24 @@ import ProgressHUD
 
 class SignUpViewController: UIViewController {
 
+    
+    @IBOutlet weak var xButton: UIButton!
+    @IBOutlet weak var SignInButton: UIButton!
+    
     @IBOutlet weak var titleLabel: UILabel!
-
+    @IBOutlet weak var subLabel: UILabel!
+    
+    
+    @IBOutlet weak var signInGoogleButton: UIButton!
+    @IBOutlet weak var signInAppleButton: UIButton!
+    
+    //bar
+    @IBOutlet weak var orLabel: UILabel!
+    //bar
+    
     @IBOutlet weak var avatar: UIImageView!
+    @IBOutlet weak var addImageLabel: UILabel!
+    
     @IBOutlet weak var fullnameContainerView: UIView!
     @IBOutlet weak var fullnameTextField: UITextField!
 
@@ -24,8 +39,10 @@ class SignUpViewController: UIViewController {
 
     @IBOutlet weak var passwordContainerView: UIView!
     @IBOutlet weak var passwordTextField: UITextField!
+    
     @IBOutlet weak var signUpButton: UIButton!
-    @IBOutlet weak var SignInButton: UIButton!
+    
+    @IBOutlet weak var passwordButton: UIButton!
     
     // the photo selected for avatar
     var image: UIImage? = nil
@@ -39,13 +56,17 @@ class SignUpViewController: UIViewController {
 
     func setupUI(){
         setupTitleLabel()
-        // add text "add an image"
+        setupSubLabel()
+        setupGoogleButton()
+        setupAppleButton()
+        setupOrLabel()
         setupAvatar()
         setupFullNameTextField()
         setupEmailTextField()
         setupPasswordTextField()
         setupSignUpButton()
         setupSignInButton()
+        setupXButton()
     }
 
 
@@ -53,20 +74,23 @@ class SignUpViewController: UIViewController {
     // Sign up button is tapped
     @IBAction func signUpButtonDidTapped(_ sender: Any) {
         self.view.endEditing(true)
-        self.validateFields()
-        self.signUp(
-            onSuccess: {
-                //change online status
-                Api.User.isOnline(bool: true)
-                // switch view
-                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let initViewController: UIViewController = storyboard.instantiateViewController(withIdentifier: IDENTIFIER_TABBAR) as UIViewController
-                initViewController.modalPresentationStyle = .fullScreen
-                self.present(initViewController, animated: true, completion: nil)
-            }) {
-            (errorMessage) in
-            ProgressHUD.showError(errorMessage)
+        if self.validateFields(){
+            self.signUp(
+                onSuccess: {
+                    //change online status
+                    Api.User.isOnline(bool: true)
+                    // switch view
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let initViewController: UIViewController = storyboard.instantiateViewController(withIdentifier: IDENTIFIER_TABBAR) as UIViewController
+                    initViewController.modalPresentationStyle = .fullScreen
+                    self.present(initViewController, animated: true, completion: nil)
+                }) {
+                (errorMessage) in
+                ProgressHUD.showError(errorMessage)
+            }
         }
+        
+
 
     }
     
@@ -75,5 +99,23 @@ class SignUpViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-
+    var iconClick = false
+    @IBAction func passwordButtonAction(_ sender: UIButton) {
+        iconClick = !iconClick
+        
+        if(iconClick) {
+            passwordTextField.isSecureTextEntry = false
+            if let image = UIImage(systemName: "lock.open"){
+                sender.setImage(image, for: UIControl.State.normal)
+            }
+//            sender.setImage(UIImage(named: "lock.open"), for: UIControl.State.normal)
+        } else {
+            passwordTextField.isSecureTextEntry = true
+            if let image = UIImage(systemName: "lock"){
+                sender.setImage(image, for: UIControl.State.normal)
+            }
+//            sender.setImage(UIImage(named: "lock"), for: UIControl.State.normal)
+        }
+    }
+    
 }

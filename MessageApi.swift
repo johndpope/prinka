@@ -11,7 +11,10 @@ import Firebase
 
 class MessageApi {
     func sendMessage(from: String, to: String, value: Dictionary<String, Any>) {
-        let ref = Ref().databaseMessageSendTo(from: from, to: to)
+        let channelId = Message.hash(forMembers: [from, to])
+
+        
+        let ref = Database.database().reference().child("feedMessages").child(channelId)
         ref.childByAutoId().updateChildValues(value)
         
         var dict = value
@@ -20,22 +23,55 @@ class MessageApi {
             dict["height"] = nil
             dict["width"] = nil
         }
+        let refFromInbox = Database.database().reference().child(REF_INBOX).child(from).child(channelId)
+        refFromInbox.updateChildValues(dict)
+        let refToInbox = Database.database().reference().child(REF_INBOX).child(to).child(channelId)
+        refToInbox.updateChildValues(dict)
         
-        let refFrom = Ref().databaseInboxInfor(from: from, to: to)
-        refFrom.updateChildValues(value)
-        
-        let refTo = Ref().databaseInboxInfor(from: to, to: from)
-        refTo.updateChildValues(value)
+//        let refFrom = Ref().databaseInboxInfor(from: from, to: to)
+//        refFrom.updateChildValues(value)
+//
+//        let refTo = Ref().databaseInboxInfor(from: to, to: from)
+//        refTo.updateChildValues(value)
     }
     
     func receiveMessage(from: String, to: String, onSuccess: @escaping(Message) -> Void) {
-        let ref = Ref().databaseMessageSendTo(from: from, to: to)
-        ref.observe(.childAdded) { (snapshot) in
+        let channelId = Message.hash(forMembers: [from, to])
+        let ref = Database.database().reference().child("feedMessages").child(channelId)
+        ref.queryOrderedByKey().queryLimited(toLast: 15).observe(.childAdded) { (snapshot) in
             if let dict = snapshot.value as? Dictionary<String, Any> {
                 if let message = Message.transformMessage(dict: dict, keyId: snapshot.key) {
                     onSuccess(message)
                 }
             }
         }
+    }
+    
+    func loadMore(lastMessageKey: String?, from: String, to: String, onSuccess: @escaping([Message], String) -> Void){
+        if lastMessageKey != nil{
+            let channelId = Message.hash(forMembers: [from, to])
+            let ref = Database.database().reference().child("feedMessages").child(channelId)
+            ref.queryOrderedByKey().queryEnding(atValue: lastMessageKey).queryLimited(toLast: 10).observeSingleEvent(of: .value){ (snapshot) in
+                guard let first = snapshot.children.allObjects.first as? DataSnapshot else{
+                    return
+                }
+                guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else{
+                    return
+                }
+                var messages = [Message ]()
+                allObjects.forEach({ (object) in
+                    if let dict = object.value as? Dictionary<String, Any>{
+                        if let message = Message.transformMessage(dict: dict, keyId: snapshot.key){
+                            if object.key != lastMessageKey{
+                                messages.append(message)
+                                
+                            }
+                        }
+                    }
+                })
+                onSuccess(messages, first.key)
+            }
+        }
+        
     }
 }

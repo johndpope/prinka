@@ -8,9 +8,14 @@
 import UIKit
 
 class PeopleTableViewController: UITableViewController, UISearchResultsUpdating {
+    // MARK: Properties
     var users: [User] = []
     var searchController: UISearchController = UISearchController(searchResultsController: nil)
     var searchResults: [User] = []
+    
+    var delegate: HomeControllerDelegate?
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,60 +31,67 @@ class PeopleTableViewController: UITableViewController, UISearchResultsUpdating 
         
         setupTableView() 
         observeUsers()
-        
-
-    }
-    func setupTableView(){
-        tableView.tableFooterView = UIView() // remove default line separator?
-    }
-    func setupSearchBarController(){
-        searchController.searchResultsUpdater = self
-//        searchController.dimsBackgroundDuringPresentation = true
-        searchController.searchBar.placeholder = "Search user..."
-        searchController.searchBar.barTintColor = UIColor.white
-        searchController.obscuresBackgroundDuringPresentation = false
-        definesPresentationContext = true
-        navigationItem.hidesSearchBarWhenScrolling = false
-        navigationItem.searchController = searchController
     }
     
+    func setupTableView(){
+//        self.tableView.backgroundColor = UIColor.black
+        tableView.tableFooterView = UIView() // remove default line separator?
+    }
+//    func setupSearchBarController(){
+//        searchController.searchResultsUpdater = self
+////        searchController.dimsBackgroundDuringPresentation = true
+//        searchController.searchBar.placeholder = "Search user..."
+//        searchController.searchBar.barTintColor = UIColor.white
+//        searchController.obscuresBackgroundDuringPresentation = false
+//        definesPresentationContext = true
+//        navigationItem.hidesSearchBarWhenScrolling = false
+//        navigationItem.searchController = searchController
+//    }
+    
     func setupNavigationBar(){
+//        navigationController?.navigationBar.barTintColor = .darkGray
+//        navigationController?.navigationBar.barStyle = .black
+        
+        // left
+        let originalImage = UIImage(systemName: "line.horizontal.3")
+        let tinitedImage = originalImage?.withRenderingMode(.alwaysTemplate)
+        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: tinitedImage, style: .plain, target: self, action: #selector(handleMenuToggle))
+        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.black
+//        navigationItem.title = "People"
+//        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        //middle
         let logo = UIImage(named: "icon-temp")
         addLogoToNavigationBarItem(logo: logo!)
         
-        // left
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.horizontal.3"), style: .plain, target: self, action: #selector(handleMenuToggle))
-        
-//        navigationItem.title = "People"
-//        navigationController?.navigationBar.prefersLargeTitles = true
+        //right
     }
     
     @objc func handleMenuToggle(){
+        delegate?.handleMenuToggle()
         print("Toggle menu...")
     }
     
     func addLogoToNavigationBarItem(logo: UIImage) {
-            let imageView = UIImageView()
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            imageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-            imageView.contentMode = .scaleAspectFit
-            imageView.image = logo
-            //imageView.backgroundColor = .lightGray
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = logo
 
-            // In order to center the title view image no matter what buttons there are, do not set the
-            // image view as title view, because it doesn't work. If there is only one button, the image
-            // will not be aligned. Instead, a content view is set as title view, then the image view is
-            // added as child of the content view. Finally, using constraints the image view is aligned
-            // inside its parent.
-            let contentView = UIView()
-            self.navigationItem.titleView = contentView
-            self.navigationItem.titleView?.addSubview(imageView)
-        
-        
-        
-            imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-            imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        }
+        // In order to center the title view image no matter what buttons there are, do not set the
+        // image view as title view, because it doesn't work. If there is only one button, the image
+        // will not be aligned. Instead, a content view is set as title view, then the image view is
+        // added as child of the content view. Finally, using constraints the image view is aligned
+        // inside its parent.
+        let contentView = UIView()
+        self.navigationItem.titleView = contentView
+        self.navigationItem.titleView?.addSubview(imageView)
+    
+        imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+    }
     
     func observeUsers(){
         Api.User.observeUsers(){ (user) in
@@ -128,7 +140,7 @@ class PeopleTableViewController: UITableViewController, UISearchResultsUpdating 
 
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 94
+        return 85
     }
     
     override func tableView(_ tasbleView: UITableView, didSelectRowAt indexPath: IndexPath){

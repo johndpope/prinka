@@ -44,12 +44,18 @@ class Message {
         // text = (text == nil) ? "" : text
         
         let imageUrl = (dict["imageUrl"] as? String) == nil ? "" : (dict["imageUrl"]! as! String)
+        let videoUrl = (dict["videoUrl"] as? String) == nil ? "" : (dict["videoUrl"]! as! String)
         let height = (dict["height"] as? Double) == nil ? 0 : (dict["height"]! as! Double)
         let width = (dict["width"] as? Double) == nil ? 0 : (dict["width"]! as! Double)
-        let videoUrl = (dict["videoUrl"] as? String) == nil ? "" : (dict["videoUrl"]! as! String)
-        print(videoUrl)
-        print("HEY DUDE I AM HERE transformMessage Message.swift")
+        
+//        print(videoUrl)
         let message = Message(id: keyId, from: from, to: to, date: date, text: text, imageUrl: imageUrl, height: height, width: width, videoUrl: videoUrl)
         return message
+    }
+    
+    static func hash(forMembers members: [String]) -> String{
+        let hash = members[0].hashString ^ members[1].hashString
+        let memberHash = String(hash)
+        return memberHash
     }
 }

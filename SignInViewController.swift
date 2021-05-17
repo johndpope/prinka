@@ -58,6 +58,7 @@ class SignInViewController: UIViewController {
     
     
     func setupUI(){
+        setupBackButton()
         setupTitleLabel()
         setupSubLabel()
         setupEmailTextField()

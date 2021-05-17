@@ -11,35 +11,47 @@ import ProgressHUD
 
 extension SignInViewController{
     
-    func setupBackground(){
-
-    }
     // MARK: - object set up
+    
+    func setupBackButton(){
+        let origImage = UIImage(systemName: "xmark")
+        let tintedImage = origImage?.withRenderingMode(.alwaysTemplate)
+        
+        backButton.setImage(tintedImage, for: UIControl.State.normal)
+        backButton.tintColor = .gray
+    }
+    
+    
     func setupTitleLabel(){
 //        titleLabel.textAlignment = .center
         
     }
+    
+    
+    
     func setupSubLabel(){
-        let boldAttribute = [
-           NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-Bold", size: 18.0)!
-        ]
-        let finalString = NSMutableAttributedString()
-        let text1 = "By continuing, you agree to our\n"
-        let text2 = "User Agreement"
-        let text3 = " and "
-        let text4 = "Privacy Policy"
-        let text5 = "."
-        let regularText1 = NSAttributedString(string: text1)
-        let regularText2 = NSAttributedString(string: text3)
-        let regularText3 = NSAttributedString(string: text5)
-        let boldText1 = NSAttributedString(string: text2, attributes: boldAttribute)
-        let boldText2 = NSAttributedString(string: text4, attributes: boldAttribute)
-        finalString.append(regularText1)
-        finalString.append(boldText1)
-        finalString.append(regularText2)
-        finalString.append(boldText2)
-        finalString.append(regularText3)
-        subLabel.attributedText = finalString
+        let normalAttribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16),
+                   NSAttributedString.Key.foregroundColor: UIColor.gray]
+        
+        let  boldAttribute = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16),
+                              NSAttributedString.Key.foregroundColor: UIColor(red: 92/255, green: 136/255, blue: 174/255, alpha: 0.9)]
+        
+        var text = [String]()
+        text.append("By continuing, you agree to our\n")
+        text.append("User Agreement")
+        text.append(" and ")
+        text.append("Privacy Policy")
+        text.append(".")
+        
+        
+        let attText = NSMutableAttributedString()
+        for i in  0...text.count-1{
+            let attribute = i % 2 == 0 ? normalAttribute : boldAttribute
+            attText.append(NSMutableAttributedString(string: text[i] ,attributes: attribute))
+        }
+        
+        subLabel.textColor = .gray
+        subLabel.attributedText = attText
     }
     func setupOrLabel(){
         orLabel.font = UIFont.boldSystemFont(ofSize: 12)
@@ -91,7 +103,7 @@ extension SignInViewController{
 
         emailTextField.borderStyle = .none
 
-        let placeholderAttr = NSAttributedString(string: "E-mail Address", attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)])
+        let placeholderAttr = NSAttributedString(string: "Email Address", attributes: [NSAttributedString.Key.foregroundColor : UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)])
 
         emailTextField.attributedPlaceholder = placeholderAttr
     }
@@ -124,7 +136,9 @@ extension SignInViewController{
 //        signInButton.titleEdgeInsets = UIEdgeInsets(top:0, left:-550.0, bottom:0.0, right:0.0)       // 450
     }
     func setupSignUpButton(){
-        
+        signUpButton.setTitle("Sign Up", for: UIControl.State.normal)
+        signUpButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        signUpButton.setTitleColor(UIColor(red: 25/255, green: 35/255, blue: 145/255, alpha: 1), for: .normal)
     }
     
     

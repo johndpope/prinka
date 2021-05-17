@@ -10,21 +10,30 @@ import AVFoundation
 
 class MessageTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var textMessageLabel: UILabel!
+    
     @IBOutlet weak var profileImage: UIImageView!
-    @IBOutlet weak var dateLabel: UILabel!
+    
+    
     @IBOutlet weak var bubbleView: UIView!
+    @IBOutlet weak var textMessageLabel: UILabel!
     @IBOutlet weak var photoMessage: UIImageView!
     @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var dateLabel: UILabel!
+    
     @IBOutlet weak var bubbleWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var bubbleLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var bubbleRightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var bubbleTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bubbleBottomConstraint: NSLayoutConstraint!
+
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
     
 
     var playerLayer: AVPlayerLayer?
     var player: AVPlayer?
     var message: Message!
+    var prevMessage: Message!
     
     @IBAction func playButtonDidTapped(_ sender: Any) {
         handlePlay()
@@ -118,19 +127,18 @@ class MessageTableViewCell: UITableViewCell {
     
     func configureCell(uid: String, message: Message, image: UIImage){
         self.message = message
+        
+        
         let text = message.text
+        
         if !text.isEmpty{
             textMessageLabel.isHidden = false
             textMessageLabel.text = message.text
             
             let widthValue = text.estimateFrameForText(text).width + 60
             
-            if widthValue < 75 {
-                bubbleWidthConstraint.constant = 75
-            }
-            else{
-                bubbleWidthConstraint.constant = widthValue
-            }
+            // about 75 if just text, 115 bc of time stamp
+            bubbleWidthConstraint.constant = (widthValue < 120) ? 120 : widthValue
             dateLabel.textColor = .lightGray
             
 //        if it contains a photo
@@ -142,28 +150,38 @@ class MessageTableViewCell: UITableViewCell {
             dateLabel.textColor = .white
         }
         
+        // message sent by current user
         if uid == message.from{
             bubbleView.backgroundColor = UIColor.systemGroupedBackground
             bubbleView.layer.borderColor = UIColor.clear.cgColor
-            bubbleRightConstraint.constant = 5
-            bubbleLeftConstraint.constant = UIScreen.main.bounds.width - bubbleWidthConstraint.constant
-        } else{
-            profileImage.isHidden = false
-            bubbleView.backgroundColor = UIColor.white
-            profileImage.image = image
-            bubbleView.layer.borderColor = UIColor.lightGray.cgColor
-            bubbleLeftConstraint.constant = 55
-            bubbleRightConstraint.constant = UIScreen.main.bounds.width - bubbleWidthConstraint.constant - bubbleLeftConstraint.constant
-             
+            bubbleRightConstraint.constant = -5
+            bubbleLeftConstraint.constant = UIScreen.main.bounds.width - bubbleWidthConstraint.constant - bubbleRightConstraint.constant + 10
+        
         }
+        // message sent by partner
+        else{
+            profileImage.isHidden = false
+            profileImage.image = image
+            
+            bubbleView.backgroundColor = UIColor.white
+            bubbleView.layer.borderColor = UIColor.lightGray.cgColor
+            bubbleLeftConstraint.constant = 32+10+10
+            bubbleRightConstraint.constant = UIScreen.main.bounds.width - bubbleWidthConstraint.constant - bubbleLeftConstraint.constant + 10
+        }
+        
+        if prevMessage != nil{
+//            bubbleBottomConstraint.constant = (message.id != prevMessage.id) ? (5) : bubbleBottomConstraint.constant
+        }
+        // date label set up
         let date = Date(timeIntervalSince1970: message.date)
         let dateString = timeAgoSinceDate(date, currentDate: Date(), numericDates: true)
         dateLabel.text = dateString
+        
+        prevMessage = message
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
 

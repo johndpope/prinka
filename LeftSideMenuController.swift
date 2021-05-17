@@ -16,6 +16,7 @@ class LeftSideMenuController: UIViewController{
     
     override func viewDidLoad(){
         super.viewDidLoad()
+        print("left side")
         configureHomeController()
     }
     

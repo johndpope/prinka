@@ -11,13 +11,12 @@ import MobileCoreServices
 import AVFoundation
 
 class ChatViewController: UIViewController {
-
     
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var textContainerView: UIView!
-    
     @IBOutlet weak var mediaButton: UIButton!
     @IBOutlet weak var audioButton: UIButton!
     @IBOutlet weak var inputTextView: UITextView!
@@ -43,9 +42,13 @@ class ChatViewController: UIViewController {
     var isTyping = false
     var timer = Timer()
     
+    var refreshControl = UIRefreshControl()
+    var lastMessageKey: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPicker()
+        setupSendButton()
         setupInputContainer()
         setupNavigationBar()
         setupTableView()

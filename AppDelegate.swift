@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configureInitialViewController()
         
         // set up back arrow in chat view
-        UINavigationBar.appearance().tintColor = UIColor(red: 255/255, green: 144/255, blue: 198/255, alpha:1)
+        UINavigationBar.appearance().tintColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha:1)
         let backImg = UIImage(named: "back")
         UINavigationBar.appearance().backIndicatorImage = backImg
         UINavigationBar.appearance().backIndicatorTransitionMaskImage = backImg
