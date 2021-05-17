@@ -22,6 +22,7 @@ class InboxTableViewCell: UITableViewCell {
     
     var inboxChangeOnlineHandle: DatabaseHandle!
     var inboxChangeProfileHandle: DatabaseHandle!
+    var inboxChangedMessageHandle: DatabaseHandle!
     
     var inbox: Inbox!
     var controller: MessagesTableViewController!
@@ -57,7 +58,35 @@ class InboxTableViewCell: UITableViewCell {
         else{
             messageLabel.text = "[MEDIA]"
         }
+
+        // why is inbox.read true when the message has not been opened?
+        if inbox.read == false{
+            print("=====not read=====")
+            print(inbox.text)
+            inbox.read = true
+        }
+        else {
+//            print("=====read=====")
+//            print(inbox.text)
+        }
         
+        
+        
+        // observe inbox message
+        let channelId = Message.hash(forMembers: [Api.User.currentUserId, inbox.user.uid])
+        let refInbox = Database.database().reference().child(REF_INBOX).child(Api.User.currentUserId).child(channelId)
+        if inboxChangedMessageHandle != nil{
+            refInbox.removeObserver(withHandle: inboxChangedMessageHandle)
+        }
+        inboxChangedMessageHandle = refInbox.observe(.childChanged, with: { (snapshot) in
+            if let snap = snapshot.value{
+                self.inbox.updateData(key: snapshot.key, value: snap)
+                if snapshot.key == "read" && (snapshot.value != nil) == false{
+                    print("==========THIS MESSAGE HAS NOT BEEN READ==========")
+                }
+                self.controller.sortedInbox()
+            }
+        })
         
         // observe online status
         let refOnline = Ref().databaseIsOnline(uid: inbox.user.uid)
@@ -68,7 +97,6 @@ class InboxTableViewCell: UITableViewCell {
                 }
             }
         }
-    
         if inboxChangeOnlineHandle != nil{
             refOnline.removeObserver(withHandle: inboxChangeOnlineHandle)
         }
@@ -80,7 +108,7 @@ class InboxTableViewCell: UITableViewCell {
             }
         }
         
-        
+        // observe username
         let refUser = Ref().databaseSpecificUser(uid: inbox.user.uid)
         if inboxChangeProfileHandle != nil{
             refUser.removeObserver(withHandle: inboxChangeProfileHandle)
@@ -94,6 +122,7 @@ class InboxTableViewCell: UITableViewCell {
             }
         })
     }
+    
     override func prepareForReuse(){
         super.prepareForReuse()
         let refOnline = Ref().databaseIsOnline(uid: self.inbox.user.uid)
@@ -106,6 +135,11 @@ class InboxTableViewCell: UITableViewCell {
             refUser.removeObserver(withHandle: inboxChangeProfileHandle)
         }
         
+        let channelId = Message.hash(forMembers: [Api.User.currentUserId, inbox.user.uid])
+        let refInbox = Database.database().reference().child(REF_INBOX).child(Api.User.currentUserId).child(channelId)
+        if inboxChangedMessageHandle != nil{
+            refInbox.removeObserver(withHandle: inboxChangedMessageHandle)
+        }
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

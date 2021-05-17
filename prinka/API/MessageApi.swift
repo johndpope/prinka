@@ -23,6 +23,7 @@ class MessageApi {
             dict["height"] = nil
             dict["width"] = nil
         }
+        
         let refFromInbox = Database.database().reference().child(REF_INBOX).child(from).child(channelId)
         refFromInbox.updateChildValues(dict)
         let refToInbox = Database.database().reference().child(REF_INBOX).child(to).child(channelId)
@@ -58,7 +59,7 @@ class MessageApi {
                 guard let allObjects = snapshot.children.allObjects as? [DataSnapshot] else{
                     return
                 }
-                var messages = [Message ]()
+                var messages = [Message]()
                 allObjects.forEach({ (object) in
                     if let dict = object.value as? Dictionary<String, Any>{
                         if let message = Message.transformMessage(dict: dict, keyId: snapshot.key){

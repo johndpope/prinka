@@ -243,19 +243,19 @@ User Agreement and Private Policy.</string>
                                                     </constraints>
                                                 </imageView>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O8v-8t-h6O">
-                                                    <rect key="frame" x="55" y="5" width="331" height="145"/>
+                                                    <rect key="frame" x="55" y="17" width="331" height="133"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Text Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F1c-l2-Gdf">
-                                                            <rect key="frame" x="12" y="5" width="314" height="125"/>
+                                                            <rect key="frame" x="12" y="5" width="314" height="113"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BTQ-Np-0yB">
-                                                            <rect key="frame" x="-2" y="0.0" width="331" height="145"/>
+                                                            <rect key="frame" x="-2" y="0.0" width="331" height="133"/>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="timestamp" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l3o-B4-wV1">
-                                                            <rect key="frame" x="10" y="130" width="312" height="10"/>
+                                                            <rect key="frame" x="10" y="118" width="312" height="10"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="10" id="cQu-M9-iLM"/>
                                                             </constraints>
@@ -271,7 +271,7 @@ User Agreement and Private Policy.</string>
                                                             </connections>
                                                         </button>
                                                         <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="me9-YV-Cal">
-                                                            <rect key="frame" x="155.5" y="62.5" width="20" height="20"/>
+                                                            <rect key="frame" x="155.5" y="56.5" width="20" height="20"/>
                                                         </activityIndicatorView>
                                                     </subviews>
                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -294,14 +294,23 @@ User Agreement and Private Policy.</string>
                                                         <constraint firstAttribute="trailing" secondItem="MPh-nz-DO8" secondAttribute="trailing" constant="5" id="zQV-xz-rOE"/>
                                                     </constraints>
                                                 </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KMH-yB-L7H">
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" systemColor="systemGrayColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Qtj-1c-tW1" firstAttribute="leading" secondItem="ah6-0a-H9l" secondAttribute="leading" constant="10" id="0aS-aV-ODp"/>
                                                 <constraint firstAttribute="bottom" secondItem="O8v-8t-h6O" secondAttribute="bottom" id="F3y-1A-Idl"/>
-                                                <constraint firstItem="O8v-8t-h6O" firstAttribute="top" secondItem="ah6-0a-H9l" secondAttribute="top" constant="5" id="HrJ-OP-DgY"/>
+                                                <constraint firstItem="O8v-8t-h6O" firstAttribute="top" secondItem="ah6-0a-H9l" secondAttribute="top" constant="17" id="HrJ-OP-DgY"/>
                                                 <constraint firstItem="O8v-8t-h6O" firstAttribute="leading" secondItem="ah6-0a-H9l" secondAttribute="leading" constant="55" id="TMV-ah-fra"/>
+                                                <constraint firstAttribute="trailing" secondItem="KMH-yB-L7H" secondAttribute="trailing" id="XYj-CO-kZG"/>
                                                 <constraint firstAttribute="bottom" secondItem="Qtj-1c-tW1" secondAttribute="bottom" id="bR4-2J-Jf0"/>
+                                                <constraint firstItem="KMH-yB-L7H" firstAttribute="top" secondItem="ah6-0a-H9l" secondAttribute="top" id="dbb-Zr-mQ6"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="O8v-8t-h6O" secondAttribute="trailing" constant="8" id="pAB-zd-Mjx"/>
+                                                <constraint firstItem="KMH-yB-L7H" firstAttribute="leading" secondItem="ah6-0a-H9l" secondAttribute="leading" id="q0H-Nq-SRL"/>
                                                 <constraint firstItem="O8v-8t-h6O" firstAttribute="bottom" secondItem="Qtj-1c-tW1" secondAttribute="bottom" id="qYM-U5-YpP"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -309,10 +318,10 @@ User Agreement and Private Policy.</string>
                                             <outlet property="activityIndicatorView" destination="me9-YV-Cal" id="jTC-UZ-f2d"/>
                                             <outlet property="bubbleLeftConstraint" destination="TMV-ah-fra" id="LJV-8h-UPN"/>
                                             <outlet property="bubbleRightConstraint" destination="pAB-zd-Mjx" id="RUc-2g-MOW"/>
-                                            <outlet property="bubbleTopConstraint" destination="HrJ-OP-DgY" id="hK6-7E-QPl"/>
                                             <outlet property="bubbleView" destination="O8v-8t-h6O" id="Wnh-0P-lgG"/>
                                             <outlet property="bubbleWidthConstraint" destination="nEv-EL-bXp" id="gFE-8h-pHy"/>
                                             <outlet property="dateLabel" destination="l3o-B4-wV1" id="dGi-uF-wXE"/>
+                                            <outlet property="headerTimeLabel" destination="KMH-yB-L7H" id="JdN-6p-D6L"/>
                                             <outlet property="photoMessage" destination="BTQ-Np-0yB" id="daK-sm-mxi"/>
                                             <outlet property="playButton" destination="MPh-nz-DO8" id="jIB-ai-LUT"/>
                                             <outlet property="profileImage" destination="Qtj-1c-tW1" id="bfB-4w-ezL"/>
@@ -431,7 +440,7 @@ User Agreement and Private Policy.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4xf-nQ-fa5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2894" y="2709"/>
+            <point key="canvasLocation" x="2892.753623188406" y="2708.7053571428569"/>
         </scene>
         <!--Messages Table View Controller-->
         <scene sceneID="2Ws-dh-srk">
@@ -469,7 +478,7 @@ User Agreement and Private Policy.</string>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iCs-Dz-KY9">
-                                            <rect key="frame" x="336" y="21" width="38" height="18"/>
+                                            <rect key="frame" x="356" y="21" width="38" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
@@ -494,7 +503,7 @@ User Agreement and Private Policy.</string>
                                         <constraint firstItem="Uby-fh-go5" firstAttribute="leading" secondItem="QEC-3r-4Ym" secondAttribute="trailing" constant="15" id="acA-TD-26R"/>
                                         <constraint firstItem="iCs-Dz-KY9" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="l6L-AP-rSi" secondAttribute="trailing" constant="8" symbolic="YES" id="ggl-ib-K8d"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="Uby-fh-go5" secondAttribute="trailing" constant="20" id="tXj-qj-GfE"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="iCs-Dz-KY9" secondAttribute="trailing" constant="20" id="v9k-q5-cbh"/>
+                                        <constraint firstAttribute="trailing" secondItem="iCs-Dz-KY9" secondAttribute="trailing" constant="20" id="v9k-q5-cbh"/>
                                         <constraint firstItem="Uby-fh-go5" firstAttribute="top" secondItem="l6L-AP-rSi" secondAttribute="bottom" constant="4" id="zrY-8d-aUr"/>
                                     </constraints>
                                 </tableViewCellContentView>

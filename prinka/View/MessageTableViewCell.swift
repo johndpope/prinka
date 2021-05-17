@@ -9,12 +9,12 @@ import UIKit
 import AVFoundation
 
 class MessageTableViewCell: UITableViewCell {
-
-    
     @IBOutlet weak var profileImage: UIImageView!
     
-    
     @IBOutlet weak var bubbleView: UIView!
+    
+    @IBOutlet weak var headerTimeLabel: UILabel!
+    
     @IBOutlet weak var textMessageLabel: UILabel!
     @IBOutlet weak var photoMessage: UIImageView!
     @IBOutlet weak var playButton: UIButton!
@@ -138,7 +138,7 @@ class MessageTableViewCell: UITableViewCell {
             let widthValue = text.estimateFrameForText(text).width + 60
             
             // about 75 if just text, 115 bc of time stamp
-            bubbleWidthConstraint.constant = (widthValue < 120) ? 120 : widthValue
+            bubbleWidthConstraint.constant = (widthValue < 100) ? 100 : widthValue
             dateLabel.textColor = .lightGray
             
 //        if it contains a photo
@@ -172,12 +172,33 @@ class MessageTableViewCell: UITableViewCell {
         if prevMessage != nil{
 //            bubbleBottomConstraint.constant = (message.id != prevMessage.id) ? (5) : bubbleBottomConstraint.constant
         }
-        // date label set up
+        // date label timestamp set up
         let date = Date(timeIntervalSince1970: message.date)
         let dateString = timeAgoSinceDate(date, currentDate: Date(), numericDates: true)
         dateLabel.text = dateString
         
+        // update header time label
+        self.formatHeaderTimeLabel(time: date) { (text) in
+            self.headerTimeLabel.text = text
+        }
+        
         prevMessage = message
+    }
+    
+    func formatHeaderTimeLabel(time: Date, completion: @escaping (String) -> ()){
+        var text = ""
+        let currentDate = Date()
+        let currentDateString = currentDate.toString(dateFormat: "yyyyMMdd")
+        let pastDateString = time.toString(dateFormat: "yyyyMMdd")
+        print(currentDate)
+        print(pastDateString)
+        if pastDateString.elementsEqual(currentDateString)  == true {
+            text = time.toString(dateFormat: "HH:mm a") + ", Today"
+        }
+        else{
+            text = time.toString(dateFormat: "dd/MM/yyyy")
+        }
+        completion(text)
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

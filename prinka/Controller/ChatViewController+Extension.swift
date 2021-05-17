@@ -9,10 +9,12 @@ import Foundation
 import UIKit
 
 extension ChatViewController{
+    
     func observeMessages(){
         Api.Message.receiveMessage(from: Api.User.currentUserId, to: partnerId) { (message) in
             self.messages.append(message)
             self.sortMessages()
+            
         }
     }
     
@@ -120,7 +122,6 @@ extension ChatViewController{
     // where you type your message
     func setupInputTextView(){
         inputTextView.delegate = self
-        
         
         placeholderLabel.isHidden = false
         let placeholderX: CGFloat = self.view.frame.size.width / 75
@@ -248,7 +249,7 @@ extension ChatViewController{
         value["from"] = Api.User.currentUserId
         value["to"] = partnerId
         value["date"] = date
-        value["read"] = true
+        value["read"] = false
         
         Api.Message.sendMessage(from: Api.User.currentUserId, to: partnerId, value: value)
     }
@@ -350,6 +351,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MessageTableViewCell") as! MessageTableViewCell
         cell.playButton.isHidden = (messages[indexPath.row].videoUrl == "")
+        cell.headerTimeLabel.isHidden = indexPath.row % 3 == 0 ? false : true
         cell.configureCell(uid: Api.User.currentUserId, message: messages[indexPath.row], image: imagePartner)
         return cell
     }
@@ -359,15 +361,15 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         let message = messages[indexPath.row]
         let text = message.text
         if !text.isEmpty {
-            height = text.estimateFrameForText(text).height + 25
-            print(message.text)
-            print(height.description)
+            height = text.estimateFrameForText(text).height + 35
+//            print(message.text)
+//            print(height.description)
         }
 
         let heightMessage = message.height
         let widthMessage = message.width
         if heightMessage != 0, widthMessage != 0 {
-            height = CGFloat(heightMessage / widthMessage * 250)
+            height = CGFloat(heightMessage*(250/widthMessage))
         }
         return height
     }
